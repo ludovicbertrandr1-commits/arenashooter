@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://cp24s2jbkbf75"]
+
+[ext_resource type="Script" uid="uid://untqm2uhxsf0" path="res://scenes/managers/enemy_spawner.gd" id="1_b3rye"]
+[ext_resource type="PackedScene" uid="uid://s5hwj8bvxna3" path="res://scenes/enemies/enemy_basic.tscn" id="2_j01lu"]
+
+[node name="EnemySpawner" type="Node2D" unique_id=596679093 node_paths=PackedStringArray("spawn_timer")]
+script = ExtResource("1_b3rye")
+enemy_scene = ExtResource("2_j01lu")
+spawn_timer = NodePath("SpawnTimer")
+
+[node name="SpawnTimer" type="Timer" parent="." unique_id=988566677]
+wait_time = 1.5
+autostart = true

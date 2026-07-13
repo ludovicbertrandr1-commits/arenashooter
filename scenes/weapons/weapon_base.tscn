@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://b3fyorb8d5hv0"]
+
+[ext_resource type="Script" uid="uid://d1b1p20x6fjny" path="res://scenes/weapons/weapon_base.gd" id="1_v4xn6"]
+[ext_resource type="PackedScene" uid="uid://ndjlq8dggu06" path="res://scenes/weapons/rateau.tscn" id="2_uvw4m"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_v4xn6"]
+load_path = "res://.godot/imported/Dog.svg-8b6549ddd78ec0a5e6f1e5602c5b5f48.ctex"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v4xn6"]
+
+[node name="WeaponBase" type="Area2D" unique_id=1495846544]
+collision_mask = 4
+script = ExtResource("1_v4xn6")
+projectile_scene = ExtResource("2_uvw4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=571545429]
+position = Vector2(-115, -115)
+scale = Vector2(0.5, 0.5)
+texture = SubResource("CompressedTexture2D_v4xn6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1760275589]
+shape = SubResource("CircleShape2D_v4xn6")
+
+[node name="AttackTimer" type="Timer" parent="." unique_id=803140232]
+autostart = true
+
+[node name="Marker2D" type="Marker2D" parent="." unique_id=466378661]

@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://cn6nlmqjvs42a"]
+
+[ext_resource type="Script" uid="uid://cg8o1dx3il8ka" path="res://scenes/ui/shop_ui.gd" id="1_ivylx"]
+[ext_resource type="PackedScene" uid="uid://bcely34x24y3c" path="res://scenes/weapons/bullet.tscn" id="2_1u5rt"]
+
+[node name="ShopUI" type="CanvasLayer" unique_id=66629643]
+process_mode = 3
+script = ExtResource("1_ivylx")
+weapon_to_buy = ExtResource("2_1u5rt")
+bullet_scene = ExtResource("2_1u5rt")
+
+[node name="Control" type="Control" parent="." unique_id=26859504]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=1849475985]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Control/VBoxContainer" unique_id=1253324361]
+layout_mode = 2
+
+[node name="Vitesse" type="Button" parent="Control/VBoxContainer" unique_id=1385349937]
+layout_mode = 2
+text = "+10 Vitesse (Coût: 10)"
+
+[node name="Dégâts" type="Button" parent="Control/VBoxContainer" unique_id=1603194166]
+layout_mode = 2
+text = "+5 Dégâts (Coût: 10)"
+
+[node name="Vie" type="Button" parent="Control/VBoxContainer" unique_id=812732707]
+layout_mode = 2
+text = "+20 Vie (Coût: 10)"
+
+[node name="BtnBullet" type="Button" parent="Control/VBoxContainer" unique_id=1515132371]
+layout_mode = 2
+text = "Achat Balle (Coût: 10)"
+
+[node name="Reprendre" type="Button" parent="Control/VBoxContainer" unique_id=1520553728]
+layout_mode = 2
+text = "Reprendre"
+
+[connection signal="pressed" from="Control/VBoxContainer/Vitesse" to="." method="_on_vitesse_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Vitesse" to="." method="_on_btn_speed_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Dégâts" to="." method="_on_dégâts_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Dégâts" to="." method="_on_btn_damage_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Vie" to="." method="_on_vie_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Vie" to="." method="_on_btn_health_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/BtnBullet" to="." method="_on_btn_bullet_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Reprendre" to="." method="_on_reprendre_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Reprendre" to="." method="_on_btn_resume_pressed"]

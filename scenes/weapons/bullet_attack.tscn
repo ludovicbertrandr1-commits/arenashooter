@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://ccy5rixxg80n4"]
+
+[ext_resource type="Script" uid="uid://pur256lbxh7r" path="res://scenes/weapons/rateau_attack.gd" id="1_r1wte"]
+[ext_resource type="Texture2D" uid="uid://cue4cfv8d8fcn" path="res://scenes/weapons/Bullet.svg" id="2_r1wte"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6lv2o"]
+
+[node name="BateauAttack" type="Area2D" unique_id=1329605907]
+visibility_layer = 4
+collision_mask = 4
+script = ExtResource("1_r1wte")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1312023410]
+texture = ExtResource("2_r1wte")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1005226821]
+shape = SubResource("CircleShape2D_6lv2o")

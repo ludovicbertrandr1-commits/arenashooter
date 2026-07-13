@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://dxetx67wgr5np"]
+
+[ext_resource type="Script" uid="uid://buajyuow2je8d" path="res://scenes/player/player.gd" id="1_dovo2"]
+[ext_resource type="Texture2D" uid="uid://doxqu7a25k5o8" path="res://scenes/player/Fermier.svg" id="2_gmlin"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lvxji"]
+radius = 86.55634
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gmlin"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lvxji"]
+bg_color = Color(0, 1, 0.6, 1)
+
+[node name="Player" type="CharacterBody2D" unique_id=1148265149 groups=["player"]]
+motion_mode = 1
+script = ExtResource("1_dovo2")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1061574158]
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("2_gmlin")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1661149333]
+shape = SubResource("CircleShape2D_lvxji")
+
+[node name="WeaponsContainer" type="Node2D" parent="." unique_id=1459256734]
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=385174216]
+offset_left = -46.0
+offset_top = -93.0
+offset_right = 55.0
+offset_bottom = -66.0
+theme_override_styles/background = SubResource("StyleBoxFlat_gmlin")
+theme_override_styles/fill = SubResource("StyleBoxFlat_lvxji")
+show_percentage = false
+
+[node name="WeaponSlot" type="Marker2D" parent="." unique_id=1778928750]
