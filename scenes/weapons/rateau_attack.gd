@@ -1,31 +1,31 @@
 extends Area2D
 
-# Ces variables sont envoyées par ton arme au moment du tir
+# 1. DÉCLARATION : C'est ici que tu définis la variable manquante
+var damage: int = 10 
+
+# 2. CONFIGURATION
 var direction: Vector2 = Vector2.ZERO
 @export var speed: float = 300.0
-@export var damage: int = 10
+
+# Note : J'ai supprimé 'projectile_scene' d'ici, 
+# car un projectile ne doit pas faire apparaître d'autres projectiles.
 
 func _ready():
 	# On connecte le signal pour détecter la collision avec le monstre
 	body_entered.connect(_on_body_entered)
 	
-	# Le "projectile" du râteau disparaît tout seul après 0.3 seconde
-	# (C'est ce qui donne l'effet de coup de mêlée plutôt que de balle de pistolet)
+	# Le projectile disparaît tout seul après 3 secondes
 	await get_tree().create_timer(3.0).timeout
 	queue_free()
 
 func _process(delta):
-	# Fait avancer l'attaque dans la direction de l'ennemi
+	# Fait avancer le projectile
 	position += direction * speed * delta
 
 func _on_body_entered(body):
-	print("DEBUG ATTACK: Je viens de toucher le nœud : ", body.name)
-	
 	if body.is_in_group("enemies"):
-		print("DEBUG ATTACK: C'est bien un ennemi, je frappe !")
 		if body.has_method("take_damage"):
+			# Maintenant, le script connaît 'damage' grâce à la ligne 4
 			body.take_damage(damage)
-			print("DEBUG ATTACK: Dégâts infligés !")
-		else:
-			print("ERREUR : L'ennemi n'a pas de fonction 'take_damage' !")
-		queue_free()
+			print("DEBUG ATTACK: Dégâts infligés : ", damage)
+		queue_free() # Détruit le projectile à l'impact

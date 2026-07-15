@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://buguhnqdjwhxh"]
+
+[ext_resource type="Script" uid="uid://bdne33hj6ugaq" path="res://main_menu.gd" id="1_fsby3"]
+
+[node name="MainMenu" type="Control" unique_id=1117213810]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fsby3")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1622591189]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=350232647]
+layout_mode = 2
+
+[node name="BtnClassique" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1649139628]
+layout_mode = 2
+text = "Mode Classique"
+
+[node name="BtnEnvahisseur" type="Button" parent="CenterContainer/VBoxContainer" unique_id=699354603]
+layout_mode = 2
+text = "Mode Envahisseur"

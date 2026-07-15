@@ -18,11 +18,22 @@ func _ready() -> void:
 	add_to_group("enemies")
 	print("DEBUG: Je suis un ennemi, je m'ajoute au groupe. Nom du nœud : ", name)
 	print("DEBUG: Liste de mes groupes : ", get_groups())
+	
+	attack_timer.timeout.connect(_on_attack_timer_timeout)
 
 func _physics_process(_delta: float) -> void:
 	if player:
-		var direction = global_position.direction_to(player.global_position)
-		velocity = direction * speed
+		# 1. Calculer la distance entre l'ennemi et le joueur
+		var distance = global_position.distance_to(player.global_position)
+		
+		# 2. Si l'ennemi est trop proche (ex: moins de 30 pixels), il s'arrête
+		if distance > 30: 
+			var direction = global_position.direction_to(player.global_position)
+			velocity = direction * speed
+		else:
+			# Il est assez près pour attaquer, on annule la vitesse
+			velocity = Vector2.ZERO
+		
 		move_and_slide()
 
 func take_damage(amount: int) -> void:
@@ -65,3 +76,35 @@ func _on_damage_zone_body_entered(body):
 		else:
 			# Ceci s'affichera une seule fois si le nœud n'est pas trouvé
 			push_warning("Le nœud 'AttackTimer' est manquant dans la scène EnemyBasic !")
+			
+
+# Quand le joueur entre dans la zone de portée
+func _on_attack_area_body_entered(body):
+	if body.is_in_group("player"):
+		# 1. Attaque immédiatement une première fois
+		attack_player()
+		# 2. Démarre le timer pour les attaques suivantes
+		attack_timer.start()
+
+# Quand le joueur sort de la zone de portée
+func _on_attack_area_body_exited(body):
+	if body.is_in_group("player"):
+		# Arrête le timer pour qu'il ne tape plus dans le vide
+		attack_timer.stop()
+
+# Ce qui se passe à chaque cycle du timer
+func _on_attack_timer_timeout():
+	attack_player()
+
+
+func _on_damage_zone_body_exited(body: Node2D) -> void:
+	pass # Replace with function body.
+
+func attack_player():
+	print("L'ennemi attaque !")
+	var player = get_tree().get_first_node_in_group("player")
+	
+	# On vérifie si le joueur existe ET s'il a la fonction pour recevoir des dégâts
+	if player and player.has_method("take_damage"):
+		# On appelle la fonction take_damage et on lui donne la valeur des dégâts
+		player.take_damage(damage_amount)

@@ -8,8 +8,20 @@
 [ext_resource type="PackedScene" uid="uid://s5hwj8bvxna3" path="res://scenes/enemies/enemy_basic.tscn" id="4_5cda3"]
 [ext_resource type="PackedScene" uid="uid://cppir67doilci" path="res://scenes/enemies/enemy_basic_wave_3.tscn" id="5_cp0g4"]
 [ext_resource type="PackedScene" uid="uid://cn6nlmqjvs42a" path="res://scenes/ui/ShopUI.tscn" id="7_cp0g4"]
-[ext_resource type="Texture2D" uid="uid://br4wo8bymrktr" path="res://scenes/weapons/Dog.svg" id="9_wh3gv"]
-[ext_resource type="Script" uid="uid://b2ii1fbal0gre" path="res://scenes/levels/murs_dynamiques.gd" id="10_6gdmk"]
+
+[sub_resource type="TileSet" id="TileSet_xsct8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6eu43"]
+size = Vector2(1148, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d2d03"]
+size = Vector2(0, 649)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kvjm0"]
+size = Vector2(0, 649)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d30w0"]
+size = Vector2(1149, 0)
 
 [sub_resource type="LabelSettings" id="LabelSettings_kvjm0"]
 
@@ -20,29 +32,44 @@
 [node name="Arena" type="Node2D" unique_id=1747145045]
 script = ExtResource("1_d30w0")
 
-[node name="Sol" type="TextureRect" parent="." unique_id=130596764]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -177.5
-offset_top = -158.0
-offset_right = 177.5
-offset_bottom = 158.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("9_wh3gv")
-stretch_mode = 1
-metadata/_edit_use_anchors_ = true
+[node name="Floor" type="TileMapLayer" parent="." unique_id=1408655576]
+visible = false
+tile_set = SubResource("TileSet_xsct8")
+
+[node name="Walls" type="Node" parent="." unique_id=2018380463]
+
+[node name="WallTop" type="StaticBody2D" parent="Walls" unique_id=105217036]
+constant_linear_velocity = Vector2(0, 200)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WallTop" unique_id=1400711936]
+position = Vector2(1, -324.5)
+shape = SubResource("RectangleShape2D_6eu43")
+
+[node name="WallLeft" type="StaticBody2D" parent="Walls" unique_id=1586194800]
+constant_linear_velocity = Vector2(0, 200)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WallLeft" unique_id=110804134]
+position = Vector2(-576, 0.5)
+shape = SubResource("RectangleShape2D_d2d03")
+
+[node name="WallRight" type="StaticBody2D" parent="Walls" unique_id=984445018]
+constant_linear_velocity = Vector2(0, 200)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WallRight" unique_id=494905607]
+position = Vector2(577, 0.5)
+shape = SubResource("RectangleShape2D_kvjm0")
+
+[node name="WallBottom" type="StaticBody2D" parent="Walls" unique_id=774640607]
+position = Vector2(0, 160)
+constant_linear_velocity = Vector2(0, 200)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/WallBottom" unique_id=1768367226]
+position = Vector2(1.5, 165)
+shape = SubResource("RectangleShape2D_d30w0")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=29188463]
-position = Vector2(0, 1)
-
-[node name="MursDynamiques" type="Node2D" parent="Camera2D" unique_id=1673560059]
-position = Vector2(0, -1)
-script = ExtResource("10_6gdmk")
 
 [node name="Player" parent="." unique_id=1148265149 instance=ExtResource("1_6eu43")]
-collision_mask = 1
 starting_weapons = Array[PackedScene]([ExtResource("3_fb61o")])
 
 [node name="EnemySpawner" parent="." unique_id=596679093 node_paths=PackedStringArray("wave_label", "time_label", "wave_timer", "shop_ui") instance=ExtResource("1_kvjm0")]

@@ -9,7 +9,7 @@ extends Node2D
 @export var shop_ui: Node
 
 # --- Configuration Spawn ---
-@export var spawn_radius: float = 750.0
+# spawn_radius a été supprimé car on utilise maintenant la taille de l'écran
 var base_spawn_time: float = 1.5
 var time_elapsed: float = 0.0
 
@@ -59,6 +59,11 @@ func start_wave() -> void:
 	spawn_timer.start(base_spawn_time)
 	wave_timer.start(get_wave_duration(current_wave))
 	print("--- DÉBUT DE LA VAGUE : ", current_wave, " ---")
+	
+	# AUTOMATISATION : On soigne le joueur ici
+	var player_node = get_tree().get_first_node_in_group("player")
+	if player_node:
+		player_node.heal_to_max()
 
 func get_wave_duration(wave: int) -> float:
 	if wave <= 2: return 10.0
@@ -80,7 +85,6 @@ func _on_wave_timer_timeout() -> void:
 		player.heal()
 	
 	# 4. Ouvrir la boutique
-	# On utilise directement la variable qu'on a remplie dans l'Inspecteur !
 	if shop_ui:
 		if shop_ui.has_method("open_shop"):
 			shop_ui.open_shop()
@@ -91,7 +95,6 @@ func _on_wave_timer_timeout() -> void:
 		print("ERREUR : L'UI de la boutique n'est pas assignée dans l'Inspecteur !")
 		start_next_wave()
 
-# Cette fonction est appelée par le bouton "Reprendre" de ton ShopUI
 func start_next_wave() -> void:
 	if current_wave < max_waves:
 		current_wave += 1
@@ -124,11 +127,18 @@ func _on_spawn_timer_timeout() -> void:
 	var scene_to_spawn = get_enemy_to_spawn()
 	if not scene_to_spawn: return
 	
-	var random_angle = randf_range(0, 2 * PI)
-	var spawn_position = player.global_position + Vector2(cos(random_angle), sin(random_angle)) * spawn_radius
-	spawn_position.x = clamp(spawn_position.x, -476.0, 476.0)
-	spawn_position.y = clamp(spawn_position.y, -224.0, 225.0)
-	
 	var new_enemy = scene_to_spawn.instantiate()
+	
+	# --- NOUVELLE LOGIQUE DE SPAWN ADAPTATIVE ---
+	# 1. Récupère la taille exacte de l'écran en temps réel
+	var ecran = get_viewport_rect().size
+	
+	# 2. Génère une position aléatoire strictement À L'INTÉRIEUR de l'écran
+	# On garde une marge de 50 pixels pour éviter que les monstres spawnent dans ou derrière les murs
+	var random_x = randf_range(50, ecran.x - 50)
+	var random_y = randf_range(50, ecran.y - 50)
+	
+	new_enemy.global_position = Vector2(random_x, random_y)
+	
+	# 3. Ajout à la scène
 	get_tree().current_scene.add_child(new_enemy)
-	new_enemy.global_position = spawn_position

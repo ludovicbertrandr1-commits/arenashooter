@@ -3,6 +3,7 @@ extends CharacterBody2D
 # --- STATISTIQUES ---
 @export var max_health: float = 100.0
 @export var speed: float = 300.0
+@export var damage: int = 10
 
 # --- CONFIGURATION (À remplir dans l'inspecteur) ---
 # Glisse ici les armes de départ propres à CHAQUE personnage
@@ -69,7 +70,15 @@ func die() -> void:
 	get_tree().call_deferred("reload_current_scene")
 
 func heal_to_max():
+	# On synchronise le max_health du joueur avec celui du GameManager
+	max_health = GameManager.max_health
+	
+	# On restaure la vie actuelle au max
 	current_health = max_health
-	if has_node("HealthBar"):
+	
+	# On met à jour l'interface (HealthBar)
+	if health_bar:
+		health_bar.max_value = max_health # Important si le max a augmenté !
 		health_bar.value = current_health
-	print("DEBUG: Santé restaurée au max !")
+	
+	print("DEBUG: Santé restaurée automatiquement à : ", current_health)
