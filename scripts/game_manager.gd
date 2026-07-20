@@ -2,8 +2,11 @@ extends Node
 
 var coins: int = 0
 var max_health: int = 100
-var damage: int = 10
+var damage: int = 0
 var speed: float = 300.0
+
+var current_mode: String = "" # Stockera "classique" ou "envahisseur"
+var selected_character: PackedScene = null # Stockera la scène du perso choisi
 
 # Coûts
 var cost_upgrade: int = 10

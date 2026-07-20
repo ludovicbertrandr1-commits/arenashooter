@@ -1,16 +1,31 @@
 extends Node2D
 
-# 1. Référence au joueur pour s'assurer qu'il est bien là dès le début
-@onready var player = get_tree().get_first_node_in_group("player")
+# 1. On déclare la variable, mais sans @onready puisqu'il n'est pas encore créé
+var player
 
 func _ready() -> void:
 	print("Arène chargée avec succès.")
 	
-	# Vérification de sécurité pour le joueur
-	if not player:
-		push_warning("Attention : Aucun nœud dans le groupe 'player' n'a été trouvé au lancement !")
+	if GameManager.selected_character:
+		# On crée le joueur en mémoire
+		var player_instance = GameManager.selected_character.instantiate()
+		
+		# On l'ajoute à la scène
+		add_child(player_instance)
+		
+		# MAGIE : On assigne l'instance à notre variable globale 'player'
+		player = player_instance 
+		
+	else:
+		print("ERREUR : Aucun personnage sélectionné !")
 	
-	# Initialisation supplémentaire si nécessaire
+	# La vérification fonctionne maintenant parfaitement
+	if not player:
+		push_warning("Attention : Le joueur n'a pas pu être créé au lancement !")
+	else:
+		print("Joueur prêt : ", player.name)
+	
+	# Initialisation supplémentaire
 	start_game()
 
 func start_game() -> void:

@@ -81,3 +81,5 @@ func _shoot():
 	get_tree().current_scene.add_child(proj)
 	proj.global_position = $Marker2D.global_position
 	proj.direction = global_position.direction_to(target.global_position)
+	
+	

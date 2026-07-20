@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://cjoff55cdnsge"]
+
+[ext_resource type="Script" uid="uid://hqfl0xllp3j6" path="res://character_selection_menu.gd" id="1_upb48"]
+
+[node name="CharacterSelectionMenu" type="Control" unique_id=1431197271]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_upb48")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1322550229]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer" unique_id=984741120]
+layout_mode = 2
+
+[node name="BtnFermier" type="Button" parent="CenterContainer/HBoxContainer" unique_id=718475310]
+layout_mode = 2
+text = "Fermier"
+
+[connection signal="pressed" from="CenterContainer/HBoxContainer/BtnFermier" to="." method="_on_btn_perso_1_pressed"]

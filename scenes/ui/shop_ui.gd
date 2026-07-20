@@ -30,10 +30,8 @@ func _on_btn_health_pressed():
 func _on_btn_damage_pressed():
 	if GameManager.buy_upgrade("damage"):
 		update_ui()
-		var player = get_tree().get_first_node_in_group("player")
-		if player:
-			player.damage = GameManager.damage
-			print("Dégâts mis à jour : ", player.damage)
+		# Plus besoin de chercher le joueur ici !
+		print("Dégâts mis à jour dans le GameManager : ", GameManager.damage)
 	else:
 		print("Pas assez de pièces !")
 
