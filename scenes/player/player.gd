@@ -12,10 +12,13 @@ extends CharacterBody2D
 var current_health: float
 var owned_weapons: Array[PackedScene] = []
 var current_weapon_index: int = 0
+var death_menu_shown: bool = false
 
 # --- NŒUDS ---
 @onready var health_bar = $HealthBar
 @onready var weapon_container = $WeaponsContainer
+
+const DEATH_MENU_SCENE: String = "res://scenes/ui/DeathMenu.tscn"
 
 func _ready() -> void:
 	add_to_group("player")
@@ -81,8 +84,14 @@ func take_damage(amount: float) -> void:
 		die()
 
 func die() -> void:
-	print("GAME OVER !")
-	get_tree().call_deferred("reload_current_scene")
+	if death_menu_shown:
+		return
+	death_menu_shown = true
+	print("GAME OVER ! Affichage du menu de mort.")
+	var death_menu = load(DEATH_MENU_SCENE).instantiate()
+	get_tree().current_scene.add_child(death_menu)
+	if death_menu.has_method("open"):
+		death_menu.open()
 
 func heal_to_max() -> void:
 	max_health = GameManager.max_health
