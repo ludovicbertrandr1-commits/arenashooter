@@ -6,7 +6,12 @@ var current_health: int = 0
 func _ready() -> void:
 	current_health = max_health
 	add_to_group("objective")
-	print("Objectif prêt avec ", current_health, " PV.")
+	visible = true
+	# s'assurer que le sprite est visible
+	var sprite = get_node_or_null("Sprite2D")
+	if sprite:
+		sprite.visible = true
+	print("Objectif prêt avec ", current_health, " PV. Node groups: ", get_groups())
 
 func take_damage(amount: int) -> void:
 	current_health -= amount

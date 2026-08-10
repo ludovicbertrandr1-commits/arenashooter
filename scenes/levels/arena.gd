@@ -5,8 +5,15 @@ var player
 var objective
 
 func _ready() -> void:
-	print("Arène chargée avec succès.")
+	print("Arène chargée avec succès. Mode courant = ", GameManager.current_mode)
+	# Diagnostic : afficher si l'objective_scene est assignée
+	if objective_scene:
+		print("Arena: objective_scene assignée.")
+	else:
+		print("Arena: objective_scene NON assignée !")
+
 	if GameManager.current_mode == "envahisseur":
+		print("Arena: mode envahisseur détecté, instanciation de l'objectif...")
 		setup_objective()
 
 	if GameManager.selected_character:
@@ -27,8 +34,20 @@ func setup_objective() -> void:
 	if objective_scene:
 		objective = objective_scene.instantiate()
 		objective.position = get_viewport_rect().size / 2
+		# mettre l'objectif au-dessus des autres éléments
+		if objective.has_method("set_z_index"):
+			objective.set_z_index(100)
+		else:
+			# si c'est un Node2D basique
+			objective.z_index = 100 if "z_index" in objective else 0
 		add_child(objective)
-		print("Objectif central instancié pour le mode envahisseur.")
+		# forcer la visibilité du sprite s'il existe
+		var sprite = objective.get_node_or_null("Sprite2D")
+		if sprite:
+			sprite.visible = true
+		objective.add_to_group("objective")
+		objective.set_process(true)
+		print("Objectif central instancié pour le mode envahisseur à : ", objective.position)
 	else:
 		push_warning("Aucun objectif défini pour le mode envahisseur !")
 

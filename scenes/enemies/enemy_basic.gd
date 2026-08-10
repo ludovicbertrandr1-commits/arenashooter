@@ -28,10 +28,17 @@ func _physics_process(_delta: float) -> void:
 		move_and_slide()
 
 func get_current_target() -> Node2D:
+	# Diagnostic: log current mode and available groups
+	# (print ici pour debug runtime)
+	#print("Enemy: current_mode=", GameManager.current_mode)
 	if GameManager.current_mode == "envahisseur":
 		var objective = get_tree().get_first_node_in_group("objective")
 		if objective:
+			# debug
+			print("Enemy: objectif trouvé -> ", objective.name)
 			return objective
+		else:
+			print("Enemy: aucun objectif trouvé, retomber sur le joueur.")
 	return get_tree().get_first_node_in_group("player")
 
 func take_damage(amount: int) -> void:
