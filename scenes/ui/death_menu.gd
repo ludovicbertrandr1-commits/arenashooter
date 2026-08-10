@@ -31,3 +31,4 @@ func _on_btn_main_menu_pressed() -> void:
 	GameManager.selected_character = null
 	get_tree().paused = false
 	get_tree().change_scene_to_file(MAIN_MENU_PATH)
+
