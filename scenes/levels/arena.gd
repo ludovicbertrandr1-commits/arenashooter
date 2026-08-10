@@ -6,11 +6,6 @@ var objective
 
 func _ready() -> void:
 	print("Arène chargée avec succès. Mode courant = ", GameManager.current_mode)
-	# Diagnostic : afficher si l'objective_scene est assignée
-	if objective_scene:
-		print("Arena: objective_scene assignée.")
-	else:
-		print("Arena: objective_scene NON assignée !")
 
 	if GameManager.current_mode == "envahisseur":
 		print("Arena: mode envahisseur détecté, instanciation de l'objectif...")
