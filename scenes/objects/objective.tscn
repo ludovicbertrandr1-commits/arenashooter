@@ -9,7 +9,6 @@ script = ExtResource( 1 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
-
-[sub_resource type="CircleShape2D" id=1]
-radius = 40.0
+shape = CircleShape2D {
+	radius = 40.0
+}
