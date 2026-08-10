@@ -9,7 +9,6 @@ extends Node2D
 @export var shop_ui: Node
 
 # --- Configuration Spawn ---
-# spawn_radius a été supprimé car on utilise maintenant la taille de l'écran
 var base_spawn_time: float = 1.5
 var time_elapsed: float = 0.0
 
@@ -25,7 +24,6 @@ var current_wave: int = 1
 # --- Variables internes ---
 var player: Node2D = null
 
-# --- Fonctions Spawns ---
 func get_enemy_to_spawn() -> PackedScene:
 	var available_enemies = []
 	if basic_enemy_scene: available_enemies.append(basic_enemy_scene)
@@ -34,7 +32,8 @@ func get_enemy_to_spawn() -> PackedScene:
 	if current_wave >= 7 and wave7_enemy_scene: available_enemies.append(wave7_enemy_scene)
 	if current_wave >= 9 and wave9_enemy_scene: available_enemies.append(wave9_enemy_scene)
 	
-	if available_enemies.size() > 0: return available_enemies.pick_random()
+	if available_enemies.size() > 0:
+		return available_enemies.pick_random()
 	return null
 
 func _ready() -> void:
@@ -44,8 +43,6 @@ func _ready() -> void:
 	
 	player = get_tree().get_first_node_in_group("player")
 	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
-	
-	# Sécurité : on s'assure que le timer de vague appellera bien la fin de vague
 	if not wave_timer.timeout.is_connected(_on_wave_timer_timeout):
 		wave_timer.timeout.connect(_on_wave_timer_timeout)
 	
@@ -54,37 +51,27 @@ func _ready() -> void:
 func start_wave() -> void:
 	if wave_label:
 		wave_label.text = "Vague : " + str(current_wave) + "/" + str(max_waves)
-	
-	# Lancer les timers
 	spawn_timer.start(base_spawn_time)
 	wave_timer.start(get_wave_duration(current_wave))
 	print("--- DÉBUT DE LA VAGUE : ", current_wave, " ---")
-	
-	# AUTOMATISATION : On soigne le joueur ici
 	var player_node = get_tree().get_first_node_in_group("player")
-	if player_node:
+	if player_node and player_node.has_method("heal_to_max"):
 		player_node.heal_to_max()
 
 func get_wave_duration(wave: int) -> float:
-	if wave <= 2: return 10.0
-	elif wave <= 4: return 20.0
-	else: return 30.0
-
-# --- LOGIQUE DE PAUSE ET BOUTIQUE ---
+	if wave <= 2:
+		return 10.0
+	elif wave <= 4:
+		return 20.0
+	return 30.0
 
 func _on_wave_timer_timeout() -> void:
-	# 1. Arrêter le spawn et le temps pendant la pause
 	spawn_timer.stop()
 	wave_timer.stop()
-	
-	# 2. Nettoyer le terrain
-	clear_map() 
-	
-	# 3. Soigner le joueur
-	if player and player.has_method("heal"):
-		player.heal()
-	
-	# 4. Ouvrir la boutique
+	clear_map()
+	var player_node = get_tree().get_first_node_in_group("player")
+	if player_node and player_node.has_method("heal_to_max"):
+		player_node.heal_to_max()
 	if shop_ui:
 		if shop_ui.has_method("open_shop"):
 			shop_ui.open_shop()
@@ -106,39 +93,28 @@ func start_next_wave() -> void:
 			time_label.text = "VICTOIRE !"
 		print("--- VICTOIRE ! ---")
 
-# --- Utilitaires ---
-
 func _process(delta: float) -> void:
 	time_elapsed += delta
 	var speed_factor = floor(time_elapsed / 30.0)
 	spawn_timer.wait_time = max(0.2, base_spawn_time - (speed_factor * 0.15))
-	
 	if time_label != null and not wave_timer.is_stopped():
 		time_label.text = "Temps restant : " + str(int(wave_timer.time_left)) + "s"
 
 func clear_map() -> void:
 	for enemy in get_tree().get_nodes_in_group("enemies"):
-		if is_instance_valid(enemy): enemy.queue_free()
-	for coin in get_tree().get_nodes_in_group("coins"):
-		if is_instance_valid(coin): coin.queue_free()
+		if is_instance_valid(enemy):
+			enemy.queue_free()
 
 func _on_spawn_timer_timeout() -> void:
-	if not player: return
+	player = get_tree().get_first_node_in_group("player")
+	if not player:
+		return
 	var scene_to_spawn = get_enemy_to_spawn()
-	if not scene_to_spawn: return
-	
+	if not scene_to_spawn:
+		return
 	var new_enemy = scene_to_spawn.instantiate()
-	
-	# --- NOUVELLE LOGIQUE DE SPAWN ADAPTATIVE ---
-	# 1. Récupère la taille exacte de l'écran en temps réel
 	var ecran = get_viewport_rect().size
-	
-	# 2. Génère une position aléatoire strictement À L'INTÉRIEUR de l'écran
-	# On garde une marge de 50 pixels pour éviter que les monstres spawnent dans ou derrière les murs
 	var random_x = randf_range(50, ecran.x - 50)
 	var random_y = randf_range(50, ecran.y - 50)
-	
 	new_enemy.global_position = Vector2(random_x, random_y)
-	
-	# 3. Ajout à la scène
 	get_tree().current_scene.add_child(new_enemy)
