@@ -77,10 +77,13 @@ func add_weapon(weapon_scene: PackedScene) -> void:
 
 # --- SANTÉ ET VIE ---
 func take_damage(amount: float) -> void:
+	print("Player: take_damage called with ", amount, " current_health before=", current_health)
 	current_health = max(current_health - amount, 0)
 	if health_bar:
 		health_bar.value = current_health
+	print("Player: new health =", current_health)
 	if current_health <= 0:
+		print("Player: health <= 0, calling die()")
 		die()
 
 func die() -> void:

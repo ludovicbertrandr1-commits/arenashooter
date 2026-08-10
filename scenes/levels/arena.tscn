@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://s5hwj8bvxna3" path="res://scenes/enemies/enemy_basic.tscn" id="4_5cda3"]
 [ext_resource type="PackedScene" uid="uid://cppir67doilci" path="res://scenes/enemies/enemy_basic_wave_3.tscn" id="5_cp0g4"]
 [ext_resource type="PackedScene" uid="uid://cn6nlmqjvs42a" path="res://scenes/ui/ShopUI.tscn" id="7_cp0g4"]
-[ext_resource type="PackedScene" uid="uid://newobjscene" path="res://scenes/objects/objective.tscn" id="11"]
 [ext_resource type="Texture2D" uid="uid://br4wo8bymrktr" path="res://scenes/weapons/Dog.svg" id="9_wh3gv"]
 [ext_resource type="Script" uid="uid://b2ii1fbal0gre" path="res://scenes/levels/murs_dynamiques.gd" id="10_6gdmk"]
 
@@ -20,7 +19,6 @@
 
 [node name="Arena" type="Node2D" unique_id=1747145045]
 script = ExtResource("1_d30w0")
-objective_scene = ExtResource("11")
 
 [node name="Sol" type="TextureRect" parent="." unique_id=130596764]
 anchors_preset = 15

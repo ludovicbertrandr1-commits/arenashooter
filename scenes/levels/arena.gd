@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var objective_scene: PackedScene
+const OBJECTIVE_PATH: String = "res://scenes/objects/objective.tscn"
 var player
 var objective
 
@@ -31,8 +31,9 @@ func _ready() -> void:
 	start_game()
 
 func setup_objective() -> void:
-	if objective_scene:
-		objective = objective_scene.instantiate()
+	var scene_res = load(OBJECTIVE_PATH)
+	if scene_res:
+		objective = scene_res.instantiate()
 		objective.position = get_viewport_rect().size / 2
 		# mettre l'objectif au-dessus des autres éléments
 		if objective.has_method("set_z_index"):
