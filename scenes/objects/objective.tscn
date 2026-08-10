@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 [ext_resource path="res://scenes/objects/objective.gd" type="Script" id=1]
 [ext_resource path="res://scenes/weapons/Dog.svg" type="Texture2D" id=2]
 
@@ -9,6 +9,7 @@ script = ExtResource( 1 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = CircleShape2D {
-	radius = 40.0
-}
+shape = SubResource( 1 )
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 40.0
