@@ -9,7 +9,7 @@ func _ready() -> void:
 
 	if GameManager.current_mode == "envahisseur":
 		print("Arena: mode envahisseur détecté, instanciation de l'objectif...")
-		setup_objective()
+		call_deferred("setup_objective")
 
 	if GameManager.selected_character:
 		var player_instance = GameManager.selected_character.instantiate()
@@ -29,18 +29,22 @@ func setup_objective() -> void:
 	var scene_res = load(OBJECTIVE_PATH)
 	if scene_res:
 		objective = scene_res.instantiate()
-		objective.position = get_viewport_rect().size / 2
+		var viewport_size = get_viewport().get_visible_rect().size
+		if viewport_size == Vector2.ZERO:
+			viewport_size = Vector2(640, 360)
+		objective.position = viewport_size / 2
 		# mettre l'objectif au-dessus des autres éléments
 		if objective.has_method("set_z_index"):
 			objective.set_z_index(100)
-		else:
-			# si c'est un Node2D basique
-			objective.z_index = 100 if "z_index" in objective else 0
+		elif "z_index" in objective:
+			objective.z_index = 100
 		add_child(objective)
 		# forcer la visibilité du sprite s'il existe
 		var sprite = objective.get_node_or_null("Sprite2D")
 		if sprite:
 			sprite.visible = true
+			if sprite.has_method("set_modulate"):
+				sprite.modulate = Color(1, 1, 1, 1)
 		objective.add_to_group("objective")
 		objective.set_process(true)
 		print("Objectif central instancié pour le mode envahisseur à : ", objective.position)

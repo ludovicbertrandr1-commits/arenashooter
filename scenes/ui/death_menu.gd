@@ -4,12 +4,13 @@ const MAIN_MENU_PATH: String = "res://scenes/levels/main_menu.tscn"
 
 func open() -> void:
 	# Permettre aux contrôles d'être cliquables même quand le jeu est en pause
-	pause_mode = PauseMode.PROCESS
+	var pause_process_value: int = 2
+	pause_mode = pause_process_value
 	visible = true
 	# Assure que les enfants UI acceptent aussi les entrées pendant la pause
 	for child in get_children():
 		if child and child.has_method("set_pause_mode"):
-			child.pause_mode = PauseMode.PROCESS
+			child.pause_mode = pause_process_value
 	get_tree().paused = true
 
 func _on_btn_restart_pressed() -> void:
